@@ -1,7 +1,6 @@
 import flet as ft
+from datetime import datetime
 from flet import (
-    DatePicker,
-    icons,
     UserControl,
     Column,
     Container,
@@ -14,6 +13,15 @@ from flet import (
     padding,
     margin,
 )
+
+
+# Fonction de validation de date
+def validate_date(date_string):
+    try:
+        datetime.strptime(date_string, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
 
 
 # Classe pour la barre latérale
@@ -77,38 +85,25 @@ class Sidebar(UserControl):
         self.page.update()
 
 
+# Formulaire principal de modification d'employé
 def build_employee_form(page):
-    
-    def update_textfield_date(date, text_field):
-        text_field.value = date
-        page.update()
-        
-    def open_date_picker(e, text_field):
-        dp = DatePicker(
-            on_change=lambda e: update_textfield_date(e.control.value, text_field)
-        )
-        dp.pick_date()
-        
-    def create_date_field(label):
-        text_field = ft.TextField(label=label)
-        date_button = ft.IconButton(
-            icon=icons.CALENDAR_TODAY,
-            on_click=lambda e: open_date_picker(e, text_field)
-        )
-        return ft.Row([text_field, date_button])
-    
+    # Création du groupe pour le conjoint
     conjoint_group = ft.Column([
         ft.Text("Conjoint:"),
         ft.TextField(label="Nom"),
         ft.TextField(label="Prénoms"),
-        create_date_field("Date de naissance")
+        ft.TextField(label="Date de naissance", on_submit=lambda e: validate_date(e.control.value))
     ], visible=False)
+
+    # Fonction pour afficher ou cacher le groupe conjoint
+    
+    # Créer les éléments de l'interface avec les labels à côté des TextField
     Matricule_row = ft.Row([ft.Text("Matricule:"), ft.TextField()], expand=True)
     civilite_row = ft.Row([ft.Text("Civilité:"), ft.TextField()], expand=True)
     Nom_row = ft.Row([ft.Text("Nom:"), ft.TextField(), ft.Text("Prénoms:"), ft.TextField()], expand=True)
-    date_de_naiss_row = ft.Row([ft.Text("Date de naissance:"), create_date_field("Date de naissance"), ft.Text("Lieu de naissance:"), ft.TextField()], expand=True)
-    N_CIN_row = ft.Row([ft.Text("N°CIN:"), ft.TextField(), ft.Text("Date CIN:"), create_date_field(), ft.Text("Lieu CIN:"), ft.TextField()], expand=True)
-    duplicata_date_row = ft.Row([ft.Text("Duplicata:"), ft.Text("Date:"), create_date_field(), ft.Text("Lieu:"), ft.TextField()], expand=True)
+    date_de_naiss_row = ft.Row([ft.Text("Date de naissance:"), ft.TextField(on_submit=lambda e: validate_date(e.control.value)), ft.Text("Lieu de naissance:"), ft.TextField()], expand=True)
+    N_CIN_row = ft.Row([ft.Text("N°CIN:"), ft.TextField(), ft.Text("Date CIN:"), ft.TextField(on_submit=lambda e: validate_date(e.control.value)), ft.Text("Lieu CIN:"), ft.TextField()], expand=True)
+    duplicata_date_row = ft.Row([ft.Text("Duplicata:"), ft.Text("Date:"), ft.TextField(on_submit=lambda e: validate_date(e.control.value)), ft.Text("Lieu:"), ft.TextField()], expand=True)
     adresse_row = ft.Row([ft.Text("Adresse:"), ft.TextField()], expand=True)
     E_mail_row = ft.Row([ft.Text("E-mail:"), ft.TextField()], expand=True)
     N_telephone_row = ft.Row([ft.Text("N°téléphone:"), ft.TextField()], expand=True)
@@ -204,7 +199,7 @@ def build_employee_form(page):
                     ft.TextField(label="Nom de l'enfant"),
                     ft.TextField(label="Prénoms de l'enfant"),
                     ft.TextField(label="Sexe de l'enfant"),
-                    create_date_field(),
+                    ft.TextField(label="Date de naissance", on_submit=lambda e: validate_date(e.control.value)),
                     ft.Checkbox(label="Enfant à charge")
                 ], expand=True)
             )

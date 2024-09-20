@@ -6,37 +6,25 @@ def main(page: ft.Page):
     page.spacing = 20
     page.theme_mode = "dark"
 
-    # Style personnalisé pour les champs d'informations
-    def create_info_row(icon, label, value):
-        return ft.Container(
-            content=ft.Row(
-                controls=[
-                    ft.Icon(icon, size=24, color=ft.colors.BLUE),
-                    ft.Column(
-                        [
-                            ft.Text(label, weight="bold", color=ft.colors.BLACK87),
-                            ft.Text(value, color=ft.colors.BLACK54)
-                        ],
-                        spacing=2
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.START,
-                spacing=10,
-            ),
-            padding=10,
-            border_radius=10,
-            bgcolor=ft.colors.BLUE_GREY_200,
-            
+    # Style personnalisé pour les champs d'informations sans cadre
+    def create_info_row(label, value):
+        return ft.Row(
+            controls=[
+                ft.Text(label, weight="bold", color=ft.colors.BLACK87, width=150),  # Label avec une largeur fixe
+                ft.Text(value, color=ft.colors.BLACK54),  # Valeur sans cadre
+            ],
+            alignment=ft.MainAxisAlignment.START,
+            spacing=10,
         )
 
-    # Liste des informations avec des icônes et une présentation plus attrayante
+    # Liste des informations avec des labels et valeurs dans une disposition propre
     info = ft.Column(
         controls=[
-            create_info_row(ft.icons.PERSON, "Nom", "John Doe"),
-            create_info_row(ft.icons.WORK, "Poste", "Développeur"),
-            create_info_row(ft.icons.APARTMENT, "Département", "Informatique"),
-            create_info_row(ft.icons.EMAIL, "Email", "john.doe@example.com"),
-            create_info_row(ft.icons.PHONE, "Téléphone", "+261 34 00 000 00")
+            create_info_row("Nom", "John Doe"),
+            create_info_row("Poste", "Développeur"),
+            create_info_row("Département", "Informatique"),
+            create_info_row("Email", "john.doe@example.com"),
+            create_info_row("Téléphone", "+261 34 00 000 00")
         ],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=10,
@@ -59,7 +47,7 @@ def main(page: ft.Page):
         shadow=ft.BoxShadow(
             spread_radius=2,
             blur_radius=10,
-            color=ft.colors.with_opacity(0.2,'black'),
+            color=ft.colors.with_opacity(0.2, 'black'),
             offset=ft.Offset(3, 3)
         )
     )
