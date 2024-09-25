@@ -1,29 +1,9 @@
 import flet as ft
 
 def main(page: ft.Page):
-    page.title = "Fiche employé - Ajout d'années"
+    page.title = "C.N.A.P.S"
 
     # Informations statiques avec des bordures arrondies et icônes
-    def create_info_row(icon, label, value):
-        return ft.Container(
-            content=ft.Row(
-                controls=[
-                    ft.Icon(icon, size=24, color=ft.colors.BLUE),
-                    ft.Column(
-                        [
-                            ft.Text(label, weight="bold", color=ft.colors.BLACK87),
-                            ft.Text(value, color=ft.colors.BLACK54)
-                        ],
-                        spacing=2
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.START,
-                spacing=10,
-            ),
-            padding=10,
-            border_radius=10,
-            bgcolor=ft.colors.GREY_100,
-        )
 
     # Fonction pour ajouter une nouvelle année
     def add_year(e):
@@ -46,7 +26,7 @@ def main(page: ft.Page):
     # Conteneur pour la liste des années
     year_section = ft.Column(
         controls=[
-            ft.Text("Années", weight="bold"),
+            ft.Text("Années:", weight="bold"),
             year_list,
             ft.Row([new_year_field, add_year_button], spacing=10)
         ],
@@ -62,7 +42,7 @@ def main(page: ft.Page):
         # Fonction pour ajouter une nouvelle ligne
     def add_row(e):
         if new_info_field.value:
-            new_row = create_info_row(ft.icons.ADD, "Nouvelle info", new_info_field.value)
+            new_row = ft.Row((ft.icons.ADD, "Nouvelle info", new_info_field.value))
             info.controls.append(new_row)
             new_info_field.value = ""  # Réinitialiser le champ après ajout
             page.update()
@@ -70,8 +50,9 @@ def main(page: ft.Page):
     # Liste des informations
     info = ft.Column(
         controls=[
-            create_info_row(ft.icons.BADGE, "Identifiant", "123456"),
-            create_info_row(ft.icons.CARD_MEMBERSHIP, "Carte CNAPS", "987654321"),
+            ft.Row([ft.Text("Identifiant:",width=120),ft.TextField("",expand=True)]),
+            ft.Row([ft.Text("Carte C.N.A.P.S:",width=120),ft.TextField("",expand=True)]),
+            ft.Row([ft.Text("Embauche:",width=120),ft.TextField("",expand=True)]),
             ft.Container(
                 content=ft.Row(
                     controls=[
@@ -86,15 +67,13 @@ def main(page: ft.Page):
                 bgcolor=ft.colors.GREY_100,
             ),
             year_section,
-            create_info_row(ft.icons.WORK, "Embauche", "01/01/2020"),
-            
         ],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=10,
     )
     
     # Champ pour ajouter une nouvelle ligne
-    new_info_field = ft.TextField(label="Nouvelle Information", width=300)
+    new_info_field = ft.Row([ft.Text("Nouvelle Ligne:",width=120),ft.TextField("", width=300)])
     
     # Bouton pour soumettre la nouvelle information
     add_button = ft.ElevatedButton(text="Ajouter", on_click=add_row)
