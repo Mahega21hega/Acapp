@@ -2,6 +2,7 @@ import flet as ft
 from datetime import datetime
 
 def main(page: ft.Page):
+    page.bgcolor=ft.colors.GREY_800
     # Liste des éléments avec leurs dates de création
     items = [
         {"name": "Élément 1", "date": datetime(2024, 9, 25)},
@@ -14,13 +15,14 @@ def main(page: ft.Page):
     def create_dropdown_table(rows):
         return ft.DataTable(
             columns=[
-                ft.DataColumn(label=ft.Text("Colonne 1 (Éditable)")),
-                ft.DataColumn(label=ft.Text("Colonne 2")),
-                ft.DataColumn(label=ft.Text("Colonne 3")),
-                ft.DataColumn(label=ft.Text("Colonne 4")),
-                ft.DataColumn(label=ft.Text("Colonne 5")),
+                ft.DataColumn(label=ft.Text("Evenement")),
+                ft.DataColumn(label=ft.Text("Type")),
+                ft.DataColumn(label=ft.Text("Date")),
+                ft.DataColumn(label=ft.Text("Suivi")),
+                ft.DataColumn(label=ft.Text("Pièce jointe")),
             ],
             rows=rows,
+            width=1000,
             border=ft.Border(
                 left=ft.BorderSide(1, ft.colors.BLACK),
                 right=ft.BorderSide(1, ft.colors.BLACK),
@@ -58,7 +60,7 @@ def main(page: ft.Page):
     for item in items:
         rows = [
             ft.DataRow(cells=[
-                ft.DataCell(ft.TextField(value="Valeur 1", width=100)),  # Cellule éditable
+                ft.DataCell(ft.TextField(value="Valeur 1", width=90)),  # Cellule éditable
                 ft.DataCell(ft.Text("Valeur 2")),
                 ft.DataCell(ft.Text("Valeur 3")),
                 ft.DataCell(ft.Text("Valeur 4")),
@@ -69,7 +71,7 @@ def main(page: ft.Page):
         # Conteneur pour le tableau déroulant
         table_container = ft.Container(
             content=create_dropdown_table(rows),
-            visible=False  # Masqué par défaut
+            visible=False # Masqué par défaut
         )
 
         # Ajouter la possibilité d'ajouter une ligne au tableau
@@ -90,7 +92,7 @@ def main(page: ft.Page):
             ),
             padding=10,
             border_radius=10,
-            bgcolor=ft.colors.LIGHT_BLUE_100,
+            bgcolor=ft.colors.BLACK87,
             margin=5,
             on_click=lambda e, c=table_container, b=bouton_ajout: on_row_click(e, ligne, c, b)  # Gestion du clic
         )

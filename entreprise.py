@@ -1,5 +1,5 @@
 import flet as ft
-import navbar  # Assurez-vous que infoentreprise.py est dans le même répertoire
+#import navbar  # Assurez-vous que infoentreprise.py est dans le même répertoire
 
 def ouvrir_page_entreprise(page: ft.Page):
     page.title = "Entreprises"
@@ -32,7 +32,7 @@ def ouvrir_page_entreprise(page: ft.Page):
     # Fonction de redirection vers infoentreprise.py
     def afficher_navbar(e):
         entreprise_id = e.control.data["id"]
-        navbar.ouvrir_page_navbar(page, entreprise_id)
+        #navbar.ouvrir_page_navbar(page, entreprise_id)
 
     # Ajouter les entreprises existantes dans les cadres cliquables
     for entreprise in entreprises:

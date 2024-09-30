@@ -3,13 +3,16 @@ import flet as ft
 # Fonction principale
 def main(page: ft.Page):
 
+    # Ajuster la taille de la fenêtre pour occuper toute la fenêtre disponible
+    page.vertical_alignment = ft.MainAxisAlignment.START
+
     # Initialiser le compteur d'ID
     id_counter = 1
 
     # Fonction pour ajouter une nouvelle ligne
     def ajouter_rubrique(e):
         nonlocal id_counter
-        ajouter_nouvelle_ligne(id_counter, f"Nom {id_counter}", "XXXXXX", "JJ/MM/AAAA", "Non", "Inactif")
+        ajouter_nouvelle_ligne(id_counter, f"Nom {id_counter}", "XXXXXX", "JJ/MM/AAAA", "Non", "Inactif", "montant")
         id_counter += 1
         data_table.update()
 
@@ -66,6 +69,29 @@ def main(page: ft.Page):
             delete_button = row.cells[-1].content
             delete_button.on_click = lambda e, row_index=i: demander_confirmation(row_index)
 
+    # Correction ici avec "controls" au lieu de "row"
+    forum = ft.ResponsiveRow(
+        controls=[  # Utiliser ResponsiveRow pour un layout responsive
+            ft.Column([ft.Text("Salaire brut:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Salaire plafonne:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Cnaps salarial:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Osie salarial:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Total hs exo:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Salaire brut imposable:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Salaire net imposable:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Irsa brut:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Réduction enfant:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Irsa net:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Salaire net:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Cnaps patronal:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Osie patronal:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Fmfp:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Cotisation salarial:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Cotisation patronal:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+            ft.Column([ft.Text("Masse salarial:"), ft.TextField()], col={"xs": 12, "sm": 6, "md": 6, "lg": 4}),
+        ]
+    )
+
     # Créer un tableau avec 6 colonnes plus une colonne de suppression
     data_table = ft.DataTable(
         columns=[
@@ -78,8 +104,7 @@ def main(page: ft.Page):
             ft.DataColumn(ft.Text("Retenu")),
             ft.DataColumn(ft.Text("Action")),  # Colonne pour les actions
         ],
-        rows=[
-            # Lignes initiales
+        rows=[  # Lignes initiales
             ft.DataRow(cells=[
                 ft.DataCell(ft.Text("1")),
                 ft.DataCell(ft.Text("John Doe")),
@@ -101,12 +126,20 @@ def main(page: ft.Page):
                 ft.DataCell(ft.IconButton(icon=ft.icons.DELETE, on_click=lambda e: demander_confirmation(1))),  # Supprimer ligne
             ]),
         ],
+        expand=True,  # Rendre le tableau expansif
     )
 
-    # Ajouter le tableau et le bouton d'ajout à la page
+    # Utiliser une Column avec ScrollMode.ALWAYS pour toujours avoir la barre de scroll
     page.add(
-        data_table,
-        ft.ElevatedButton("Ajouter une rubrique", on_click=ajouter_rubrique)
+        ft.Column(
+            controls=[
+                data_table,
+                ft.ElevatedButton("Ajouter une rubrique", on_click=ajouter_rubrique),
+                forum
+            ],
+            scroll=ft.ScrollMode.ALWAYS,  # Activer la barre de scroll toujours visible
+            expand=True  # Permet à la colonne de s'étendre sur toute la fenêtre
+        )
     )
 
 # Lancer l'application

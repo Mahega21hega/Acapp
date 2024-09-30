@@ -1,27 +1,56 @@
 import flet as ft
-from flet import (
-    Column,
-    Container,
-    Row,
-    Text,
-    ElevatedButton,
-    TextField,
-    alignment,
-    border_radius,
-    colors,
-    padding,
-    margin,
-)
+from fcalendar import create_calendar
 
 def build_employee_form(page):
+
+    def on_date_selected(date, target_field):
+        target_field.value = date
+        page.update()
+
+    # Initialiser les champs de date avant de les utiliser dans create_calendar
+    date_naissance_field = ft.TextField(
+        height=50,
+        read_only=True,
+        suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_naissance(e)),
+    )
+
+    date_cin_field = ft.TextField(
+        height=50,
+        read_only=True,
+        suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_cin(e)),
+    )
+
+    date_duplicata_field = ft.TextField(
+        height=50,
+        read_only=True,
+        suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_duplicata(e)),
+    )
+    
+    date_naiss_conjoint_field = ft.TextField(
+        height=50,
+        read_only=True,
+        suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_naiss_conjoint(e)),
+    )
+    
+    # Créer les calendriers après l'initialisation des champs de date
+    toggle_calendar_naissance, blur_background_naissance, calendar_container_naissance = create_calendar(page, date_naissance_field)
+    toggle_calendar_cin, blur_background_cin, calendar_container_cin = create_calendar(page, date_cin_field)
+    toggle_calendar_duplicata, blur_background_duplicata, calendar_container_duplicata = create_calendar(page, date_duplicata_field)
+    toggle_calendar_naiss_conjoint, blur_background_naiss_conjoint, calendar_container_naiss_conjoint = create_calendar(page, date_naiss_conjoint_field)
+
+    # Ajouter les flous d'arrière-plan des calendriers à l'overlay
+    page.overlay.append(blur_background_naissance)
+    page.overlay.append(blur_background_cin)
+    page.overlay.append(blur_background_duplicata)
+    page.overlay.append(blur_background_naiss_conjoint)
+    
     conjoint_group = ft.Column([
         ft.Text("Conjoint:"),
-        ft.Row([ft.Text("Nom:",width=120),ft.TextField("")]),
-        ft.Row([ft.Text("Prénom:",width=120),ft.TextField("")]),
-        ft.Row([ft.Text("Date de naissance:",width=120),ft.TextField("")])
+        ft.Row([ft.Text("Nom:", width=120), ft.TextField("")]),
+        ft.Row([ft.Text("Prénom:", width=120), ft.TextField("")]),
+        ft.Row([ft.Text("Date de naissance:", width=120), date_naiss_conjoint_field])
     ], visible=False)
 
-    # Fonction pour gérer l'affichage de nationalités personnalisées
     def on_nationality_change(e):
         nationality_input.visible = e.control.value == "Autre"
         page.update()
@@ -51,7 +80,6 @@ def build_employee_form(page):
         on_submit=add_new_nationality
     )
 
-    # Fonction pour gérer l'affichage des conjoints et de la situation personnalisée
     def on_situation_change(e):
         conjoint_group.visible = e.control.value == "Marié(e)"
         situation_input.visible = e.control.value == "Autre"
@@ -86,17 +114,41 @@ def build_employee_form(page):
     def update_enfants(nb_enfants):
         enfant_group.controls.clear()
         for i in range(nb_enfants):
+            def create_on_click_handler(index):
+                return lambda e: toggle_calendar_naiss_enfant(index)
+                
+            date_naiss_enfant_field = ft.TextField(
+            height=50,
+            read_only=True,
+            suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=create_on_click_handler(i))
+        )
+            toggle_calendar_naiss_enfant, blur_background_naiss_enfant, calendar_container_naiss_enfant = create_calendar(page, date_naiss_enfant_field)
+            page.overlay.append(blur_background_naiss_enfant)
+            
+            radio_group = ft.RadioGroup(
+            content=ft.Row([
+                ft.Radio(value="Oui", label="Oui"),
+                ft.Radio(value="Non", label="Non")
+            ]),
+            value=""  # Par défaut "Non"
+        )
+
             enfant_group.controls.append(
                 ft.Column([
                     ft.Text(f"Enfant {i + 1}: "),
-                    ft.Row([ft.Text("Nom:",width=120),ft.TextField("")]),
-                    ft.Row([ft.Text("Prénoms:",width=120),ft.TextField("")]),
-                    ft.Row([ft.Text("Sexe:",width=120),ft.TextField("")]),
-                    ft.Row([ft.Text("Date de naissance:",width=120),ft.TextField("")]),
-                    ft.Row([ft.Text("Enfant à charge:"), ft.Checkbox(label="Oui"),ft.Checkbox("Non")])
+                    ft.Row([ft.Text("Nom:", width=120), ft.TextField("")]),
+                    ft.Row([ft.Text("Prénoms:", width=120), ft.TextField("")]),
+                    ft.Row([ft.Text("Sexe:", width=120), ft.TextField("")]),
+                    ft.Row([ft.Text("Date de naissance:", width=120), date_naiss_enfant_field]),
+                    ft.Row([ft.Text("Enfant à charge:"), radio_group])
                 ], expand=True)
             )
         enfant_group.update()
+        date_naiss_enfant_field = ft.TextField(
+        height=50,
+        read_only=True,
+        suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e, i=i: toggle_calendar_naiss_enfant(e)),
+    )
 
     def on_enfant_number_change(e):
         try:
@@ -107,74 +159,66 @@ def build_employee_form(page):
             enfant_group.update()
 
     enfant_counter_field = ft.Row([
-        ft.Text("Nombre d'enfant:",width=120),
+        ft.Text("Nombre d'enfant:", width=120),
         ft.TextField(value="0", on_change=on_enfant_number_change)
     ], expand=True)
 
-    # Sections principales du formulaire
+    # Champs du formulaire
     form_fields = [
-        ft.Row([ft.Text("Matricule:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Civilité:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Nom:",width=120), ft.TextField(), ft.Text("Prénoms:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Date de naissance:",width=120), ft.TextField(), ft.Text("Lieu de naissance:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("N°CIN:",width=120), ft.TextField(), ft.Text("Date CIN:",width=120), ft.TextField(), ft.Text("Lieu CIN:"), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Duplicata:"), ft.Text("Date:",width=50), ft.TextField(), ft.Text("Lieu:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Adresse:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("E-mail:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("N°téléphone:",width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Nationalité:",width=120), nationality_dropdown], expand=True),
+        ft.Row([ft.Text("Matricule:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Civilité:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Nom:", width=120), ft.TextField(), ft.Text("Prénoms:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Date de naissance:", width=120), date_naissance_field, ft.Text("Lieu de naissance:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("N°CIN:", width=120), ft.TextField(), ft.Text("Date CIN:", width=120), date_cin_field, ft.Text("Lieu CIN:"), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Duplicata:"), ft.Text("Date:", width=50), date_duplicata_field, ft.Text("Lieu:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Adresse:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("E-mail:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("N°téléphone:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Nationalité:", width=120), nationality_dropdown], expand=True),
         nationality_input,
-        ft.Row([ft.Text("Situation matrimoniale:",width=120), situation_dropdown], expand=True),
+        ft.Row([ft.Text("Situation matrimoniale:", width=120), situation_dropdown], expand=True),
         situation_input,
         conjoint_group,
         enfant_counter_field,
         enfant_group
     ]
 
-    # Cadre de la photo avec bordure et espace
     photo_id_container = ft.Container(
         content=ft.Image(src="1dc1f7e37b9e4991b1bb0e3400808f45.jpg", width=150, height=150),
-        alignment=alignment.center,
-        border_radius=border_radius.all(10),
+        alignment=ft.alignment.center,
+        border_radius=ft.border_radius.all(10),
         width=150,
         height=150,
-        bgcolor=colors.GREY_400,
-        padding=padding.all(10),
+        bgcolor=ft.colors.GREY_400,
+        padding=ft.padding.all(10),
     )
 
-    # Formulaire avec scroll si nécessaire et espacement entre sections
     form_column = ft.Column(form_fields, expand=True, spacing=20)
 
-    # Boutons d'action avec styles améliorés
     buttons_row = ft.Row([
-        ElevatedButton(text="Enregistrer", on_click=save_data, bgcolor=colors.GREEN_400, color=colors.WHITE),
-        ElevatedButton(text="Ajouter nouveau", on_click=save_and_new, bgcolor=colors.BLUE_400, color=colors.WHITE),
-        ElevatedButton(text="Continuer", on_click=save_and_continue, bgcolor=colors.ORANGE_400, color=colors.WHITE),
-        ElevatedButton(text="Supprimer", on_click=delete_data, bgcolor=colors.RED_400, color=colors.WHITE),
+        ft.ElevatedButton(text="Enregistrer", on_click=save_data, bgcolor=ft.colors.GREEN_400, color=ft.colors.WHITE),
+        ft.ElevatedButton(text="Ajouter nouveau", on_click=save_and_new, bgcolor=ft.colors.BLUE_400, color=ft.colors.WHITE),
+        ft.ElevatedButton(text="Continuer", on_click=save_and_continue, bgcolor=ft.colors.ORANGE_400, color=ft.colors.WHITE),
+        ft.ElevatedButton(text="Supprimer", on_click=delete_data, bgcolor=ft.colors.RED_400, color=ft.colors.WHITE),
     ], alignment=ft.MainAxisAlignment.END, expand=True)
 
-    # Ajouter les boutons à la fin du formulaire
     form_column.controls.append(buttons_row)
 
-    # Conteneur principal du formulaire
     return ft.Container(
         content=ft.Column([
             ft.Container(
                 content=photo_id_container,
-                alignment=alignment.top_right,
+                alignment=ft.alignment.top_right,
                 expand=True,
-                margin=ft.margin.all(0),  # Pour être bien dans le coin
+                margin=ft.margin.all(0),
             ),
-            ft.Row(
-                [form_column], expand=True
-            ),
+            ft.Row([form_column], expand=True),
         ]),
         padding=ft.padding.all(20),
         expand=True,
-        bgcolor=colors.GREY_800,
+        bgcolor=ft.colors.GREY_800,
     )
 
-# Fonctions d'action sur les boutons
 def save_data(e):
     print("Enregistrer les modifications")
 
@@ -187,16 +231,13 @@ def save_and_continue(e):
 def delete_data(e):
     print("Supprimer")
 
-# Fonction principale pour lancer l'application Flet
+
 def main(page: ft.Page):
     page.title = "Fiche salarié(e)"
-    page.scroll = "adaptive"  # Scroll activé si nécessaire
-    page.window_maximized = True  # Maximiser la fenêtre automatiquement
+    page.scroll = "adaptive"
+    page.window.maximized = True
     employee_form = build_employee_form(page)
-
-    # Agencement principal sans la barre latérale
     page.add(employee_form)
     page.update()
 
-# Lancer l'application Flet
 ft.app(target=main)
