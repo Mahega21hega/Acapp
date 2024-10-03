@@ -14,19 +14,7 @@ def main(page: ft.Page):
         
 
     # Fonction pour afficher une boîte de dialogue
-    def show_dialog(title, content):
-        dlg = ft.AlertDialog(
-            title=ft.Text(title),
-            content=ft.Text(content),
-            actions=[
-                ft.Row([ft.TextButton("Oui"), ft.TextButton("Non")]),
-            ],
-            actions_alignment=ft.MainAxisAlignment.END,
-        )
-        page.dialog = dlg
-        dlg.open = True
-        page.update()
-
+    
     # Liste déroulante pour le champ Type
     type_label = ft.Text("Type:", width=120)
     type_dropdown = ft.Dropdown(

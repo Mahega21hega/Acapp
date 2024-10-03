@@ -2,6 +2,30 @@ import flet as ft
 from fcalendar import create_calendar
 
 def build_employee_form(page):
+    
+    # Variable pour suivre l'état du mode édition
+    is_editing = False
+
+    def toggle_edit_mode(e):
+        nonlocal is_editing
+        is_editing = not is_editing  # Basculer entre le mode édition et visualisation
+
+        # Activer ou désactiver tous les champs en fonction du mode
+        for field in form_fields:
+            if isinstance(field, ft.Row):
+                for control in field.controls:
+                    if isinstance(control, ft.TextField):
+                        control.disabled = not is_editing
+                        nationality_dropdown.disabled = not is_editing
+                        nationality_input.disabled = not is_editing
+                        situation_dropdown.disabled = not is_editing
+                        situation_input.disabled = not is_editing
+                        conjoint_group.disabled = not is_editing
+                        date_naiss_conjoint_field.disabled = not is_editing
+                        enfant_group.disabled = not is_editing
+
+        edit_button.text = "Enregistrer" if is_editing else "Éditer"
+        page.update()
 
     def on_date_selected(date, target_field):
         target_field.value = date
@@ -9,24 +33,28 @@ def build_employee_form(page):
 
     # Initialiser les champs de date avant de les utiliser dans create_calendar
     date_naissance_field = ft.TextField(
+        disabled=True,
         height=50,
         read_only=True,
         suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_naissance(e)),
     )
 
     date_cin_field = ft.TextField(
+        disabled=True,
         height=50,
         read_only=True,
         suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_cin(e)),
     )
 
     date_duplicata_field = ft.TextField(
+        disabled=True,
         height=50,
         read_only=True,
         suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_duplicata(e)),
     )
     
     date_naiss_conjoint_field = ft.TextField(
+        disabled=True,
         height=50,
         read_only=True,
         suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_naiss_conjoint(e)),
@@ -46,10 +74,11 @@ def build_employee_form(page):
     
     conjoint_group = ft.Column([
         ft.Text("Conjoint:"),
-        ft.Row([ft.Text("Nom:", width=120), ft.TextField("")]),
-        ft.Row([ft.Text("Prénom:", width=120), ft.TextField("")]),
+        ft.Row([ft.Text("Nom:", width=120), ft.TextField()]),
+        ft.Row([ft.Text("Prénom:", width=120), ft.TextField()]),
         ft.Row([ft.Text("Date de naissance:", width=120), date_naiss_conjoint_field])
-    ], visible=False)
+    ],disabled=True,
+    visible=False)
 
     def on_nationality_change(e):
         nationality_input.visible = e.control.value == "Autre"
@@ -71,6 +100,7 @@ def build_employee_form(page):
             ft.dropdown.Option("Anglais(e)"),
             ft.dropdown.Option("Autre")
         ],
+        disabled=True,
         on_change=on_nationality_change
     )
 
@@ -100,6 +130,7 @@ def build_employee_form(page):
             ft.dropdown.Option("Célibataire"),
             ft.dropdown.Option("Autre")
         ],
+        disabled=True,
         on_change=on_situation_change
     )
 
@@ -109,7 +140,7 @@ def build_employee_form(page):
         on_submit=add_new_situation
     )
 
-    enfant_group = ft.Column([])
+    enfant_group = ft.Column([],disabled=True)
 
     def update_enfants(nb_enfants):
         enfant_group.controls.clear()
@@ -136,19 +167,15 @@ def build_employee_form(page):
             enfant_group.controls.append(
                 ft.Column([
                     ft.Text(f"Enfant {i + 1}: "),
-                    ft.Row([ft.Text("Nom:", width=120), ft.TextField("")]),
-                    ft.Row([ft.Text("Prénoms:", width=120), ft.TextField("")]),
-                    ft.Row([ft.Text("Sexe:", width=120), ft.TextField("")]),
+                    ft.Row([ft.Text("Nom:", width=120), ft.TextField()]),
+                    ft.Row([ft.Text("Prénoms:", width=120), ft.TextField()]),
+                    ft.Row([ft.Text("Sexe:", width=120), ft.TextField()]),
                     ft.Row([ft.Text("Date de naissance:", width=120), date_naiss_enfant_field]),
                     ft.Row([ft.Text("Enfant à charge:"), radio_group])
-                ], expand=True)
+                ],
+                expand=True)
             )
         enfant_group.update()
-        date_naiss_enfant_field = ft.TextField(
-        height=50,
-        read_only=True,
-        suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e, i=i: toggle_calendar_naiss_enfant(e)),
-    )
 
     def on_enfant_number_change(e):
         try:
@@ -160,20 +187,20 @@ def build_employee_form(page):
 
     enfant_counter_field = ft.Row([
         ft.Text("Nombre d'enfant:", width=120),
-        ft.TextField(value="0", on_change=on_enfant_number_change)
+        ft.TextField(disabled=True,value="0", on_change=on_enfant_number_change)
     ], expand=True)
 
     # Champs du formulaire
     form_fields = [
-        ft.Row([ft.Text("Matricule:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Civilité:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Nom:", width=120), ft.TextField(), ft.Text("Prénoms:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Date de naissance:", width=120), date_naissance_field, ft.Text("Lieu de naissance:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("N°CIN:", width=120), ft.TextField(), ft.Text("Date CIN:", width=120), date_cin_field, ft.Text("Lieu CIN:"), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Duplicata:"), ft.Text("Date:", width=50), date_duplicata_field, ft.Text("Lieu:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("Adresse:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("E-mail:", width=120), ft.TextField()], expand=True),
-        ft.Row([ft.Text("N°téléphone:", width=120), ft.TextField()], expand=True),
+        ft.Row([ft.Text("Matricule:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("Civilité:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("Nom:", width=120), ft.TextField(disabled=True), ft.Text("Prénoms:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("Date de naissance:", width=120), date_naissance_field, ft.Text("Lieu de naissance:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("N°CIN:", width=120), ft.TextField(disabled=True), ft.Text("Date CIN:", width=120), date_cin_field, ft.Text("Lieu CIN:"), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("Duplicata:"), ft.Text("Date:", width=50), date_duplicata_field, ft.Text("Lieu:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("Adresse:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("E-mail:", width=120), ft.TextField(disabled=True)], expand=True),
+        ft.Row([ft.Text("N°téléphone:", width=120), ft.TextField(disabled=True)], expand=True),
         ft.Row([ft.Text("Nationalité:", width=120), nationality_dropdown], expand=True),
         nationality_input,
         ft.Row([ft.Text("Situation matrimoniale:", width=120), situation_dropdown], expand=True),
@@ -182,6 +209,10 @@ def build_employee_form(page):
         enfant_counter_field,
         enfant_group
     ]
+    
+    # Créer le bouton Éditer/Enregistrer
+    edit_button = ft.ElevatedButton(text="Éditer", on_click=toggle_edit_mode)
+
 
     photo_id_container = ft.Container(
         content=ft.Image(src="1dc1f7e37b9e4991b1bb0e3400808f45.jpg", width=150, height=150),
@@ -196,10 +227,8 @@ def build_employee_form(page):
     form_column = ft.Column(form_fields, expand=True, spacing=20)
 
     buttons_row = ft.Row([
-        ft.ElevatedButton(text="Enregistrer", on_click=save_data, bgcolor=ft.colors.GREEN_400, color=ft.colors.WHITE),
-        ft.ElevatedButton(text="Ajouter nouveau", on_click=save_and_new, bgcolor=ft.colors.BLUE_400, color=ft.colors.WHITE),
-        ft.ElevatedButton(text="Continuer", on_click=save_and_continue, bgcolor=ft.colors.ORANGE_400, color=ft.colors.WHITE),
-        ft.ElevatedButton(text="Supprimer", on_click=delete_data, bgcolor=ft.colors.RED_400, color=ft.colors.WHITE),
+        edit_button,
+        ft.ElevatedButton(text="Supprimer", on_click=delete_data),
     ], alignment=ft.MainAxisAlignment.END, expand=True)
 
     form_column.controls.append(buttons_row)
@@ -216,17 +245,8 @@ def build_employee_form(page):
         ]),
         padding=ft.padding.all(20),
         expand=True,
-        bgcolor=ft.colors.GREY_800,
+        bgcolor=ft.colors.GREY_900,
     )
-
-def save_data(e):
-    print("Enregistrer les modifications")
-
-def save_and_new(e):
-    print("Enregistrer et ajouter un nouveau")
-
-def save_and_continue(e):
-    print("Enregistrer et continuer les modifications")
 
 def delete_data(e):
     print("Supprimer")

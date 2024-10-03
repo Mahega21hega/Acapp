@@ -1,11 +1,11 @@
 import flet as ft
 
 def main(page: ft.Page):
-    page.bgcolor=ft.colors.GREY_800
+    page.bgcolor=ft.colors.GREY_900
     page.title = "Fiche Client - Informations Entreprise"
     
     # Logo de l'entreprise
-    logo = ft.Image(src="path_to_logo.jpg", width=150, height=150, fit=ft.ImageFit.COVER)
+    logo = ft.Image(src="97968957-14b7-40d9-98c2-042c77a49414.jpg", width=150, height=150, fit=ft.ImageFit.COVER)
     
     # Informations générales sur l'entreprise
     nom_entreprise_field = ft.TextField(label="Nom de l'entreprise", hint_text="Nom de l'entreprise", width=400)
