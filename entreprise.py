@@ -8,6 +8,11 @@ def ouvrir_page_entreprise(page: ft.Page):
     page.update()
     page.window_height = 800
     page.window_width = 800
+    page.window_resizable = True
+    page.window_maximizable = True
+    page.window_minimizable = True
+    page.window_center()
+
 
     # Création de la GridView
     entreprises_grid = ft.GridView(

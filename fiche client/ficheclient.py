@@ -1,6 +1,7 @@
 import flet as ft
 
 def main(page: ft.Page):
+    page.bgcolor=ft.colors.GREY_800
     page.title = "Fiche Client - Informations Entreprise"
     
     # Logo de l'entreprise

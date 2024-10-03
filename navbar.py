@@ -94,7 +94,7 @@ class Sidebar(UserControl):
             margin=margin.all(0),
             width=250,
             height=1000,
-            bgcolor=colors.GREY_700,
+            bgcolor=colors.WHITE,
         )
         return self.view
 

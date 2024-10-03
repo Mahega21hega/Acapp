@@ -1,9 +1,8 @@
 import flet as ft
 
 def main(page: ft.Page):
+    page.bgcolor = ft.colors.GREY_800
     page.title = "C.N.A.P.S"
-
-    # Informations statiques avec des bordures arrondies et icônes
 
     # Fonction pour ajouter une nouvelle année
     def add_year(e):
@@ -28,7 +27,7 @@ def main(page: ft.Page):
         controls=[
             ft.Text("Années:", weight="bold"),
             year_list,
-            ft.Row([new_year_field, add_year_button], spacing=10)
+            ft.Row([new_year_field, add_year_button], spacing=10),
         ],
         visible=False,  # Masquer par défaut
         spacing=10,
@@ -38,59 +37,62 @@ def main(page: ft.Page):
     def toggle_year_section(e):
         year_section.visible = not year_section.visible
         page.update()
-        
-        # Fonction pour ajouter une nouvelle ligne
+
+    # Fonction pour ajouter une nouvelle ligne
     def add_row(e):
-        if new_info_field.value:
-            new_row = ft.Row((ft.icons.ADD, "Nouvelle info", new_info_field.value))
+        if new_info_label_field.value:
+            new_row = ft.Row(
+                controls=[
+                    ft.Text(new_info_label_field.value + ":", width=120),
+                    ft.TextField("", expand=True)  # Champ vide
+                ]
+            )
             info.controls.append(new_row)
-            new_info_field.value = ""  # Réinitialiser le champ après ajout
+            new_info_label_field.value = ""  # Réinitialiser le champ après ajout
             page.update()
 
     # Liste des informations
     info = ft.Column(
         controls=[
-            ft.Row([ft.Text("Identifiant:",width=120),ft.TextField("",expand=True)]),
-            ft.Row([ft.Text("Carte C.N.A.P.S:",width=120),ft.TextField("",expand=True)]),
-            ft.Row([ft.Text("Embauche:",width=120),ft.TextField("",expand=True)]),
+            ft.Row([ft.Text("Identifiant:", width=120), ft.TextField("", expand=True)]),
+            ft.Row([ft.Text("Carte C.N.A.P.S:", width=120), ft.TextField("", expand=True)]),
+            ft.Row([ft.Text("Embauche:", width=120), ft.TextField("", expand=True)]),
             ft.Container(
                 content=ft.Row(
                     controls=[
-                        ft.Icon(ft.icons.FAMILY_RESTROOM, size=24, color=ft.colors.BLUE),
-                        ft.TextButton("Allocation Familiale", on_click=toggle_year_section)
+                        ft.TextButton("Allocation Familiale", on_click=toggle_year_section),
                     ],
                     alignment=ft.MainAxisAlignment.START,
                     spacing=10,
                 ),
                 padding=10,
                 border_radius=10,
-                bgcolor=ft.colors.GREY_100,
+                bgcolor=ft.colors.GREY_900,
             ),
             year_section,
         ],
         alignment=ft.MainAxisAlignment.CENTER,
         spacing=10,
     )
-    
-    # Champ pour ajouter une nouvelle ligne
-    new_info_field = ft.Row([ft.Text("Nouvelle Ligne:",width=120),ft.TextField("", width=300)])
-    
+
+    # Champ pour ajouter une nouvelle ligne (label seulement)
+    new_info_label_field = ft.TextField(label="Nom de la ligne", width=300)
+
     # Bouton pour soumettre la nouvelle information
     add_button = ft.ElevatedButton(text="Ajouter", on_click=add_row)
-    
+
     # Agencement du formulaire pour ajouter une nouvelle ligne
     add_new_info_row = ft.Row(
-        controls=[new_info_field, add_button],
+        controls=[new_info_label_field, add_button],
         alignment=ft.MainAxisAlignment.START,
         spacing=10,
     )
-
 
     # Agencement principal
     layout = ft.Column(
         controls=[
             info,  # Liste des infos statiques
-            add_new_info_row,  # Liste des années et bouton pour ajouter une nouvelle année  # Formulaire pour ajouter une nouvelle ligne
+            add_new_info_row,  # Formulaire pour ajouter une nouvelle ligne
         ],
         spacing=20,
         alignment=ft.MainAxisAlignment.START,

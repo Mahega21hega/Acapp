@@ -1,6 +1,7 @@
 import flet as ft
 
 def main(page: ft.Page):
+    page.bgcolor=ft.colors.GREY_800
     # Fonction pour gérer la soumission du formulaire
 
     # Création des champs de formulaire

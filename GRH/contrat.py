@@ -1,10 +1,17 @@
 import flet as ft
+from fcalendar import create_calendar
 
 def main(page: ft.Page):
-    page.title = "Modification d'employé"
+    page.bgcolor=ft.colors.GREY_900
+    page.title = "Contrat"
 
     # Variable pour suivre l'état du mode édition
     is_editing = False
+    
+    def on_date_selected(date, target_field):
+        target_field.value = date
+        page.update()
+        
 
     # Fonction pour afficher une boîte de dialogue
     def show_dialog(title, content):
@@ -33,9 +40,9 @@ def main(page: ft.Page):
     )
 
     debut_date_label = ft.Text("Date de début:", width=120)
-    debut_date_field = ft.TextField(expand=True, disabled=True)
+    debut_date_field = ft.TextField(height=50,suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_debutdate(e)),expand=True, disabled=True)
     fin_date_label = ft.Text("Date de fin:", width=120)
-    fin_date_field = ft.TextField(expand=True, disabled=True)
+    fin_date_field = ft.TextField(height=50,suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_findate(e)),expand=True, disabled=True)
     fonction_label = ft.Text("Fonction:", width=120)
     fonction_field = ft.TextField(expand=True, disabled=True)
     departe_label = ft.Text("Département:", width=120)
@@ -49,9 +56,9 @@ def main(page: ft.Page):
     
     # Les champs cachés par défaut
     debut_label = ft.Text("Début:", width=50, visible=False)
-    debut_field = ft.TextField(expand=True, visible=False,disabled=True)
+    debut_field = ft.TextField(height=50,suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_debut(e)),expand=True, visible=False,disabled=True)
     fin_label = ft.Text("Fin:", width=30, visible=False)
-    fin_field = ft.TextField(expand=True, visible=False,disabled=True)
+    fin_field = ft.TextField(height=50,suffix=ft.IconButton(icon=ft.icons.CALENDAR_MONTH, on_click=lambda e: toggle_calendar_fin(e)),expand=True, visible=False,disabled=True)
     decision_label = ft.Text("Décision:", width=60, visible=False)
     decision_dropdown = ft.Dropdown(
         expand=True,
@@ -65,6 +72,17 @@ def main(page: ft.Page):
 
     # Les checkbox pour la période d'essai
     periessai_checkbox = ft.Checkbox(label="", disabled=True)
+    
+    toggle_calendar_debutdate, blur_background_debutdate, calendar_container_debutdate = create_calendar(page, debut_date_field)
+    toggle_calendar_findate, blur_background_findate, calendar_container_findate = create_calendar(page, fin_date_field)
+    toggle_calendar_debut, blur_background_debut, calendar_container_debut = create_calendar(page, debut_field)
+    toggle_calendar_fin, blur_background_fin, calendar_container_fin = create_calendar(page, fin_field)
+    
+    page.overlay.append(blur_background_debutdate)
+    page.overlay.append(blur_background_findate)
+    page.overlay.append(blur_background_debut)
+    page.overlay.append(blur_background_fin)
+
 
     # Fonction pour basculer entre l'édition et l'affichage
     def toggle_edit_mode(e):
