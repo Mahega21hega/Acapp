@@ -1,7 +1,7 @@
 import flet as ft
 
 def main(page: ft.Page):
-    page.bgcolor = ft.colors.GREY_800
+    page.bgcolor = ft.colors.GREY_900
     page.title = "C.N.A.P.S"
 
     # Fonction pour ajouter une nouvelle année

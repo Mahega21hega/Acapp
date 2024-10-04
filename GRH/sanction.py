@@ -2,7 +2,7 @@ import flet as ft
 from datetime import datetime
 
 def main(page: ft.Page):
-    page.bgcolor=ft.colors.GREY_800
+    page.bgcolor=ft.colors.GREY_900
     # Liste des éléments avec leurs dates de création
     items = [
         {"name": "Élément 1", "date": datetime(2024, 9, 25)},
