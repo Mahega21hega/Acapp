@@ -2,6 +2,7 @@ import flet as ft
 
 # Fonction principale
 def main(page: ft.Page):
+    page.bgcolor = ft.colors.GREY_900
     page.vertical_alignment = ft.MainAxisAlignment.START
 
     id_counter = 1
@@ -15,14 +16,17 @@ def main(page: ft.Page):
 
     def demander_confirmation(row_index):
         def handle_delete_confirmation(e):
-            data_table.rows.pop(row_index)
-            reindexer_lignes()
-            data_table.update()
-            page.dialog.open = False
-            page.update()
+            try:
+                data_table.rows.pop(row_index)
+                reindexer_lignes()
+                data_table.update()
+                confirmation_dialog.open = False
+                page.update()
+            except IndexError:
+                print(f"Index {row_index} hors limites")
 
         def cancel(e):
-            page.dialog.open = False
+            confirmation_dialog.open = False
             page.update()
 
         confirmation_dialog = ft.AlertDialog(
@@ -34,14 +38,14 @@ def main(page: ft.Page):
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
-        page.dialog = confirmation_dialog
+        page.overlay.append(confirmation_dialog)
         confirmation_dialog.open = True
         page.update()
 
     def ajouter_nouvelle_ligne(id, nom, cnaps, embauche, alloc_familiale, statut, retenu):
         delete_icon = ft.IconButton(
             icon=ft.icons.DELETE,
-            on_click=lambda e: demander_confirmation(len(data_table.rows))
+            on_click=lambda e, index=len(data_table.rows): demander_confirmation(index)
         )
         new_row = ft.DataRow(cells=[
             ft.DataCell(ft.Text(str(id))),

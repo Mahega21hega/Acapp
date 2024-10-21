@@ -67,7 +67,7 @@ def main(page: ft.Page):
                 ),
                 padding=10,
                 border_radius=10,
-                bgcolor=ft.colors.GREY_900,
+                bgcolor=ft.colors.GREY_800,
             ),
             year_section,
         ],

@@ -3,26 +3,6 @@ import flet as ft
 def main(page: ft.Page):
     page.title = "Trimestres de l'année"
     
-    # Fonction pour créer un tableau déroulant avec DataTable
-    def create_dropdown_table(rows):
-        return ft.DataTable(
-            columns=[
-                ft.DataColumn(label=ft.Text("Evenement")),
-                ft.DataColumn(label=ft.Text("Type")),
-                ft.DataColumn(label=ft.Text("Date")),
-                ft.DataColumn(label=ft.Text("Suivi")),
-                ft.DataColumn(label=ft.Text("Pièce jointe")),
-            ],
-            rows=rows,
-            expand=True,
-            width=2000,
-            border=ft.Border(
-                left=ft.BorderSide(1, ft.colors.BLACK),
-                right=ft.BorderSide(1, ft.colors.BLACK),
-                bottom=ft.BorderSide(1, ft.colors.BLACK),
-            )
-        )
-    
     # Correct initialization of Ref without arguments
     show_trimestres = ft.Ref()  # This will later hold a bool value
     trimestres_list = ft.Ref()  # This will later hold a Column
@@ -43,24 +23,6 @@ def main(page: ft.Page):
         
         page.update()
 
-    # Création des lignes du tableau
-    rows = [
-        ft.DataRow(cells=[
-            ft.DataCell(ft.Text("Événement 1")),
-            ft.DataCell(ft.Text("Type A")),
-            ft.DataCell(ft.Text("01/01/2024")),
-            ft.DataCell(ft.Text("Suivi 1")),
-            ft.DataCell(ft.Text("Pièce jointe 1")),
-        ]),
-        ft.DataRow(cells=[
-            ft.DataCell(ft.Text("Événement 2")),
-            ft.DataCell(ft.Text("Type B")),
-            ft.DataCell(ft.Text("02/02/2024")),
-            ft.DataCell(ft.Text("Suivi 2")),
-            ft.DataCell(ft.Text("Pièce jointe 2")),
-        ])
-    ]
-
     # Conteneur principal avec padding
     container = ft.Container(
         content=ft.Column(
@@ -74,12 +36,15 @@ def main(page: ft.Page):
                         ],
                         alignment="spaceBetween"
                     ),
-                    on_tap=toggle_trimestres  # Click event to toggle table visibility
+                    on_tap=toggle_trimestres  # Click event
                 ),
                 ft.Divider(height=10),  # Ligne de séparation
                 ft.Column(
                     [
-                        create_dropdown_table(rows)
+                        ft.Text("- 1 Trimestre", size=18),
+                        ft.Text("- 2 Trimestre", size=18),
+                        ft.Text("- 3 Trimestre", size=18),
+                        ft.Text("- 4 Trimestre", size=18),
                     ],
                     spacing=5,
                     ref=trimestres_list,  # Référence à la liste des trimestres
@@ -92,7 +57,7 @@ def main(page: ft.Page):
         border_radius=10,  # Arrondir les coins
         border=ft.border.all(1, "black"),  # Bordure noire
         height=80,  # Hauteur par défaut réduite
-        width=1000,
+        width=2000,
         ref=container_ref,  # Référence du conteneur
     )
     

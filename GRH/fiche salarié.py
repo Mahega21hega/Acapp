@@ -26,10 +26,28 @@ def build_employee_form(page):
 
         edit_button.text = "Enregistrer" if is_editing else "Éditer"
         page.update()
-
-    def on_date_selected(date, target_field):
-        target_field.value = date
+        
+    def reset_fields():
+        """Réinitialise tous les champs du formulaire."""
+        for field in form_fields:
+            if isinstance(field, ft.Row):
+                for control in field.controls:
+                    if isinstance(control, ft.TextField):
+                        control.value = ""  # Réinitialiser les champs à une chaîne vide
+        nationality_dropdown.value = None
+        nationality_input.value = ""
+        nationality_input.visible = False
+        situation_dropdown.value = None
+        situation_input.value = ""
+        situation_input.visible = False
+        conjoint_group.visible = False
+        enfant_group.controls.clear()
+        enfant_group.update()
         page.update()
+
+    def delete_data(e):
+        """Efface les données des champs du formulaire."""
+        reset_fields()
 
     # Initialiser les champs de date avant de les utiliser dans create_calendar
     date_naissance_field = ft.TextField(
@@ -222,6 +240,7 @@ def build_employee_form(page):
         height=150,
         bgcolor=ft.colors.GREY_400,
         padding=ft.padding.all(10),
+        margin=ft.margin.only(left=50, top=10, right=40),
     )
 
     form_column = ft.Column(form_fields, expand=True, spacing=20)
@@ -255,7 +274,9 @@ def delete_data(e):
 def main(page: ft.Page):
     page.title = "Fiche salarié(e)"
     page.scroll = "adaptive"
-    page.window.maximized = True
+    page.window.maximized = False
+    page.window.width = 1350
+    page.window.height = 800
     employee_form = build_employee_form(page)
     page.add(employee_form)
     page.update()
