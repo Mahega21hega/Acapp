@@ -1,26 +1,295 @@
 {
+    "contrat_actuel": {
+        "type": "Consultant",
+        "date_debut": "21/10/2024",
+        "date_fin": "29/10/2024",
+        "fonction": "fonction",
+        "departement": "depart",
+        "categorie": "catego",
+        "lieu_travail": "ary sy",
+        "salaire_base": 3000,
+        "periode_essai": {
+            "en_periode_essai": false,
+            "debut": "15/10/2024",
+            "fin": "17/10/2024",
+            "decision": "Renouvellement"
+        }
+    },
     "historique": [
         {
-            "contrat_id": 1,
-            "modifications": [
-                {
-                    "modification_date": "01/01/2023",
-                    "modification_type": "Création du contrat"
-                },
-                {
-                    "modification_date": "01/06/2023",
-                    "modification_type": "Mise à jour du salaire"
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDI",
+                "date_debut": "",
+                "date_fin": "",
+                "fonction": "",
+                "departement": "",
+                "categorie": "",
+                "lieu_travail": "",
+                "salaire_base": 0,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "",
+                    "fin": "",
+                    "decision": ""
                 }
-            ]
+            }
         },
         {
-            "contrat_id": 2,
-            "modifications": [
-                {
-                    "modification_date": "01/01/2024",
-                    "modification_type": "Création du contrat"
+            "modification_date": "2024-10-17",
+            "modification_type": "Augmentation de salaire",
+            "details": {
+                "salaire_base": 55000
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDI",
+                "date_debut": "",
+                "date_fin": "",
+                "fonction": "",
+                "departement": "",
+                "categorie": "",
+                "lieu_travail": "",
+                "salaire_base": 2000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "",
+                    "fin": "",
+                    "decision": ""
                 }
-            ]
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDD",
+                "date_debut": "lknnhh",
+                "date_fin": "lkokok",
+                "fonction": "kjkjij",
+                "departement": "",
+                "categorie": "",
+                "lieu_travail": "",
+                "salaire_base": 2000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "",
+                    "fin": "",
+                    "decision": ""
+                }
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Augmentation de salaire",
+            "details": {
+                "salaire_base": 55000
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Augmentation de salaire",
+            "details": {
+                "salaire_base": 55000
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Augmentation de salaire",
+            "details": {
+                "salaire_base": 55000
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "Consultant",
+                "date_debut": "lknnhh",
+                "date_fin": "lkokok",
+                "fonction": "kjkjij",
+                "departement": "",
+                "categorie": "",
+                "lieu_travail": "",
+                "salaire_base": 55000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "",
+                    "fin": "",
+                    "decision": ""
+                }
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Augmentation de salaire",
+            "details": {
+                "salaire_base": 55000
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDD",
+                "date_debut": "4/10/2024",
+                "date_fin": "4/10/2024",
+                "fonction": "fonction",
+                "departement": "departement",
+                "categorie": "categorie",
+                "lieu_travail": "ary sy aty",
+                "salaire_base": 2000,
+                "periode_essai": {
+                    "en_periode_essai": true,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDD",
+                "date_debut": "4/10/2024",
+                "date_fin": "4/10/2024",
+                "fonction": "fonction",
+                "departement": "departement",
+                "categorie": "categorie",
+                "lieu_travail": "ary sy aty",
+                "salaire_base": 2000,
+                "periode_essai": {
+                    "en_periode_essai": true,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "Consultant",
+                "date_debut": "4/10/2024",
+                "date_fin": "6/10/2024",
+                "fonction": "fonction",
+                "departement": "departement",
+                "categorie": "categorie",
+                "lieu_travail": "ary sy aty",
+                "salaire_base": 2000,
+                "periode_essai": {
+                    "en_periode_essai": true,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "2024-10-17",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDD",
+                "date_debut": "21/10/2024",
+                "date_fin": "29/10/2024",
+                "fonction": "focte",
+                "departement": "depart",
+                "categorie": "catego",
+                "lieu_travail": "ary sy",
+                "salaire_base": 80000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "CDD",
+                "date_debut": "21/10/2024",
+                "date_fin": "29/10/2024",
+                "fonction": "focte",
+                "departement": "depart",
+                "categorie": "catego",
+                "lieu_travail": "ary sy",
+                "salaire_base": 3000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "18/10/2024",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "Consultant",
+                "date_debut": "21/10/2024",
+                "date_fin": "29/10/2024",
+                "fonction": "focte",
+                "departement": "depart",
+                "categorie": "catego",
+                "lieu_travail": "ary sy",
+                "salaire_base": 3000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "18/10/2024",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "Consultant",
+                "date_debut": "21/10/2024",
+                "date_fin": "29/10/2024",
+                "fonction": "foncte",
+                "departement": "depart",
+                "categorie": "catego",
+                "lieu_travail": "ary sy",
+                "salaire_base": 3000,
+                "periode_essai": {
+                    "en_periode_essai": true,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
+        },
+        {
+            "modification_date": "18/10/2024",
+            "modification_type": "Modification du contrat",
+            "details": {
+                "type": "Consultant",
+                "date_debut": "21/10/2024",
+                "date_fin": "29/10/2024",
+                "fonction": "fonction",
+                "departement": "depart",
+                "categorie": "catego",
+                "lieu_travail": "ary sy",
+                "salaire_base": 3000,
+                "periode_essai": {
+                    "en_periode_essai": false,
+                    "debut": "15/10/2024",
+                    "fin": "17/10/2024",
+                    "decision": "Renouvellement"
+                }
+            }
         }
     ]
 }
